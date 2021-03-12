@@ -18,10 +18,10 @@ app.use(fileUpload({}))
 
 app.use('/upload', upMiddleware, upploadPathMiddleware, (req, res) => {
     try {
-        res.json({message: 'complete!'})
+        res.json({message: 'complete!', url: params})
 
     } catch (e) {
-
+        res.status(404).json({message: 'method not alowed!'})
     }
 })
 
