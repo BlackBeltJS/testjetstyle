@@ -1,27 +1,24 @@
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
+const fs = require('fs')
+const path = require('path')
  
-// const adapter = new FileSync('db.json')
-// const db = low(adapter)
+async function completeLogJson (content) {
 
-class UploadLoger {
-    constructor() {
-        this.adapter = new FileSync('./log.json')
-        this.db = low(this.adapter)
-    }
-
-    async formatErrLog (data) {
-        this.db.set('formatErr.data', data)
-            .write()
-    }
-
-    async typeErrLog () {
-
-    }
-
-    async completeLog () {
-
-    }
+    fs.readFile(path.join(__dirname, '../', 'log.json'), (err, data) => {
+        if (err) {
+            console.log('logger read err')
+            throw err
+        }
+        const arData = JSON.parse(data)
+        arData.push({log: content})
+        const completeData = JSON.stringify(arData) 
+        fs.writeFile(path.join(__dirname, '../', 'log.json'), completeData, (err) => {
+            if (err) {
+                console.log('logger write err')
+                throw err
+            }
+        })
+    })
+    
 }
 
-module.exports = new UploadLoger()
+module.exports = completeLogJson
