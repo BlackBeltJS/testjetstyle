@@ -1,8 +1,6 @@
 require('dotenv').config()
 const express = require('express')
 const fileUpload = require('express-fileupload')
-const logger = require('./logger/loger')
-
 const fs = require('fs')
 const path = require('path')
 
@@ -21,7 +19,9 @@ app.use(fileUpload({}))
 // use rout
 app.use('/upload', upMiddleware, upploadPathMiddleware, (req, res) => {
     try {
-        res.json({message: 'complete!'})
+        res.json({
+            message: 'complete!'
+        })
 
     } catch (e) {
         console.log(e)
@@ -29,8 +29,8 @@ app.use('/upload', upMiddleware, upploadPathMiddleware, (req, res) => {
     }
 })
 
-// start script
-const start = async () => {
+// start server
+const start = () => {
     try {
         fs.access(path.join(__dirname, '/temp'), (err) => {
             if (err) {
@@ -42,6 +42,11 @@ const start = async () => {
                 fs.mkdirSync(path.join(__dirname, '/upload'))
             }
         })
+        fs.access(path.join(__dirname, '/data'), err => {
+            if (err) {
+                fs.mkdirSync(path.join(__dirname, '/data'))
+            }
+        })
         fs.access(path.join(__dirname, 'log.json'), err => {
             if (err) {
                 fs.writeFileSync(path.join(__dirname, 'log.json'), '[]')
@@ -49,7 +54,7 @@ const start = async () => {
         })
         app.listen(PORT, () => {console.log('Srver has been started on port: ', PORT)})
     } catch (e) {
-        console.log('Started error: ', e)
+        console.log('Server run error: ', e)
     }
 }
 

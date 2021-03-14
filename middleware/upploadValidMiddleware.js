@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
         const {size, name} = file
         if (BigInt(size) >= 2048000000000n) {
             logger({
-                time: new Date().toString,
+                time: `${new Date()}`,
                 status: 'file size is too large',
                 detail: `File size is ${size}`
             })

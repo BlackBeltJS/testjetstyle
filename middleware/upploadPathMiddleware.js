@@ -41,10 +41,12 @@ module.exports = async (req, res, next) => {
                 throw err
             }
             wkhtmltopdf(data, {output: path.join(rootPath, '/data', fileName + '.pdf')}, (err) => {
-
-                next() 
+                
+                next()
             })
+            
         })
+
         await folderSize(path.join(rootPath, '/temp/', fileName), (err, size) => {
             if (err) {
                 console.log('folder size calculation err')
